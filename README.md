@@ -9,20 +9,14 @@
 # Create an Azure service principal with Azure CLI
 	
 Automated tools that use Azure services should always have restricted permissions. Instead of having applications sign in as a fully privileged user, Azure offers service principals.
-An Azure service principal is an identity created for use with applications, hosted services, and automated tools to access Azure resources. This access is restricted by the roles assigned to the service principal, giving you control over which resources can be accessed and at which level. For security reasons, it's always recommended to use service principals with automated tools rather than allowing them to log in with a user identity.
 
 
 ''''az ad sp create-for-rbac --name ServicePrincipalName''''
 
  * Important
 The output for a service principal with password authentication includes the password key. Make sure you copy this value - it can't be retrieved. If you forget the password, reset the service principal credentials.
-The appId and tenant keys appear in the output of az ad sp create-for-rbac and are used in service principal authentication. Record their values, but they can be retrieved at any point with az ad sp list.
 
-''''az ad sp list --show-mine --query "[].{id:appId, tenant:appOwnerTenantId}"''''
-
-Important
-az ad sp list or az ad sp show get the user and tenant, but not any authentication secrets or the authentication method. Secrets for certificates in Key Vault can be retrieved with az keyvault secret show, but no other secrets are stored by default. If you forget an authentication method or secret, reset the service principal credentials.
-Manage service principal roles
+az ad sp list --show-mine --query "[].{id:appId, tenant:appOwnerTenantId}"
 
 ```az role assignment create --assignee APP_ID --role Reader```
 ```az role assignment delete --assignee APP_ID --role Contributor```
