@@ -1,4 +1,4 @@
-## Install and configure Terraform to provision Azure resources
+## Install and configure Terraform to provision Azure Kubernetes
 		
 		
    # Prerequisites
@@ -163,24 +163,26 @@ Please download the code https://github.com/avi202020/terraform-provider-azurerm
 
 cd terraform-provider-azurerm/examples/kubernetes/basic
  
- Please make sure environment parameters are setup execute and then exit
+ **Please make sure environment parameters are setup execute and then exit
 		ARM_SUBSCRIPTION_ID
 		ARM_CLIENT_ID
 		ARM_CLIENT_SECRET
 		ARM_TENANT_ID
-		ARM_ENVIRONMENT
+		ARM_ENVIRONMENT**
 
- execute terraform init
+ ```execute terraform init```
  
- execute terraform plan outfile
+ execute plan outfile
+ 
+ ```terraform plan outfile```
  
 Once plan is validated,execute terraform apply
 
-  Terraform apply outfile
+  ```Terraform apply outfile```
 
 
 * Connect to kubernetes Cluster
 
 	az aks get-credentials --resource-group <> name <Cluster Name>
 
-kubectl get nodes
+```kubectl get nodes```
