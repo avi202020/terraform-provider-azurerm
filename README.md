@@ -1,18 +1,17 @@
-Install and configure Terraform to provision Azure resources
+## Install and configure Terraform to provision Azure resources
 		
 		
-		Prerequisites
+   # Prerequisites
 		
-		 Azure Cloud Account proviprovisioned  with  admin role  in order to setup 
-		 Azure CLI Installed Refer  
-
+    * Azure Cloud Account proviprovisioned  with  admin role  in order to setup 
+    * Azure CLI Configured
 		   
-Create an Azure service principal with Azure CLI
+# Create an Azure service principal with Azure CLI
 	
 Automated tools that use Azure services should always have restricted permissions. Instead of having applications sign in as a fully privileged user, Azure offers service principals.
 An Azure service principal is an identity created for use with applications, hosted services, and automated tools to access Azure resources. This access is restricted by the roles assigned to the service principal, giving you control over which resources can be accessed and at which level. For security reasons, it's always recommended to use service principals with automated tools rather than allowing them to log in with a user identity.
 This article shows you the steps for creating, getting information about, and resetting a service principal with the Azure CLI.
-Create a service principal
+# Create a service principal
 
 Create a service principal with the az ad sp create-for-rbac command. When creating a service principal, you choose the type of sign-in authentication it uses.
  Note
@@ -23,30 +22,15 @@ Password-based authentication
 Without any authentication parameters, password-based authentication is used with a random password created for you.
 Azure CLI
 
-az ad sp create-for-rbac --name ServicePrincipalName
+''''az ad sp create-for-rbac --name ServicePrincipalName''''
 
- Important
+ * Important
 The output for a service principal with password authentication includes the password key. Make sure you copy this value - it can't be retrieved. If you forget the password, reset the service principal credentials.
 The appId and tenant keys appear in the output of az ad sp create-for-rbac and are used in service principal authentication. Record their values, but they can be retrieved at any point with az ad sp list.
-Certificate-based authentication is also possible please refer 
 
-Unless you store the certificate in Key Vault, the output includes the fileWithCertAndPrivateKey key. This key's value tells you where the generated certificate is stored. Make sure that you copy the certificate to a secure location, or you can't sign in with this service principal.
-For certificates stored in Key Vault, retrieve the certificate's private key with az keyvault secret show. In Key Vault, the name of the certificate's secret is the same as the certificate name. If you lose access to a certificate's private key, reset the service principal credentials.
-The appId and tenant keys appear in the output of az ad sp create-for-rbac and are used in service principal authentication. Record their values, but they can be retrieved at any point with az ad sp list.
-Get an existing service principal
+''''az ad sp list --show-mine --query "[].{id:appId, tenant:appOwnerTenantId}"''''
 
-A list of the service principals in a tenant can be retrieved with az ad sp list. By default this command returns the first 100 service principals for your tenant. To get all of a tenant's service principals, use the --all argument. Getting this list can take a long time, so it's recommended that you filter the list with one of the following arguments:
-		--display-name requests service principals that have a prefix that match the provided name. The display name of a service principal is the value set with the --name parameter during creation. If you didn't set --name during service principal creation, the name prefix is azure-cli-.
-		--spn filters on exact service principal name matching. The service principal name always starts with https://. if the value you used for --name wasn't a URI, this value is https:// followed by the display name.
-		--show-mine requests only service principals created by the signed-in user.
-		--filter takes an OData filter, and performs server-side filtering. This method is recommended over filtering client-side with the CLI's --query argument. To learn about OData filters, see OData expression syntax for filters.
-The information returned for service principal objects is verbose. To get only the information necessary for sign-in, use the query string [].{id:appId, tenant:appOwnerTenantId}. For example, to get the sign-in information for all service principals created by the currently logged in user:
-Azure CLI
-
-
-
-az ad sp list --show-mine --query "[].{id:appId, tenant:appOwnerTenantId}"
- Important
+Important
 az ad sp list or az ad sp show get the user and tenant, but not any authentication secrets or the authentication method. Secrets for certificates in Key Vault can be retrieved with az keyvault secret show, but no other secrets are stored by default. If you forget an authentication method or secret, reset the service principal credentials.
 Manage service principal roles
 
@@ -59,7 +43,7 @@ The changes can be verified by listing the assigned roles:
 
 az role assignment list --assignee APP_ID
 
-Sign in using a service principal
+* Sign in using a service principal
 
 Test the new service principal's credentials and permissions by signing in. To sign in with a service prinicpal, you need the appId, tenant, and credentials.
 To sign in with a service principal using a password:
@@ -78,12 +62,12 @@ az ad sp credential reset --name APP_ID
 
 
 
-Setup Azure AD service principal  in order to terraform cli to assume role and create Kubernetes cluster on 
+* Setup Azure AD service principal  in order to terraform cli to assume role and create Kubernetes cluster on 
 		
 
 az ad sp create-for-rbac --name ServicePrincipalName
 
-Install Terraform
+# Install Terraform
 
 To install Terraform, download the package for your operating system into a separate installation directory. The download contains a single executable file, for which you must also define a global path. For instructions on setting the path on Linux and Mac, see this web page . For instructions on setting the path on Windows, see this web page .
 Check the configuration of your path using the command terraform. A list of available Terraform options appears, as in the following output example:
@@ -92,7 +76,7 @@ console
 azureuser@Azure:~$ terraform
 Usage: terraform [--version] [--help] <command> [args]
 
-Configure Terraform access to Azure
+# Configure Terraform access to Azure
 
 Create an Azure AD service principal to allow Terraform to provision resources in Azure. The service principal allows your Terraform scripts to provision resources in your Azure subscription.
 If you have multiple Azure subscriptions, first query your account with az account list for a list of Subscription ID and Subscriber ID values:
@@ -150,19 +134,17 @@ terraform init
 
 The result looks like the following example:
 
-terraform plan -o output file
+terraform plan -o outputfile
 
 
 * provider.azurerm: version = "~> 0.3"
 
 Terraform has been successfully initialized!
 You can preview the actions to be performed by the Terraform script with terraform plan. 
-
-
-
 When you are ready to create the resource group, apply your Terraform plan as follows:
 
 terraform apply
+
 The result looks like the following example:
 
 
@@ -184,7 +166,7 @@ azurerm_resource_group.rg: Creating...
   tags.%:   "" => "<computed>"
 azurerm_resource_group.rg: Creation complete after 1s
 
-Setup Kubernetese Cluster Environment
+# Setup Kubernetese Cluster Environment
 Please download the code https://github.com/avi202020/terraform-provider-azurerm.git
 
 cd terraform-provider-azurerm/examples/kubernetes/basic
@@ -196,16 +178,16 @@ cd terraform-provider-azurerm/examples/kubernetes/basic
 		ARM_TENANT_ID
 		ARM_ENVIRONMENT
 
-   execute terraform init
-   execute terraform plan. outputfile
+ execute terraform init
+  execute terraform plan outfile
  
- Once plan is validated execute terraform apply
+Once plan is validated,execute terraform apply
 
-    Terraform apply outfile
+  Terraform apply outfile
 
 
 Connect to kubernetes Cluster
 
-az aks get-credentials --resource-group k8demo-k8s-resources --name k8demo-k8s
+	az aks get-credentials --resource-group <> name <Cluster Name>
 
- kubectl get nodes
+kubectl get nodes
