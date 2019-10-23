@@ -1,4 +1,4 @@
-## Install and configure Terraform to provision Azure Kubernetes
+##   Configure and Execute Terraform to provision Azure Kubernetes Cluster Resources
 		
 		
    # Prerequisites
