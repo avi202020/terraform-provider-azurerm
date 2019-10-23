@@ -5,22 +5,20 @@
 		
     * Azure Cloud Account proviprovisioned  with  admin role  in order to setup 
     * Azure CLI Configured
-    
+      
        
-    Application Deployment-> https://github.com/avi202020/K8AppDB/edit/master/README.md
+   # Application Deployment-> https://github.com/avi202020/K8AppDB/edit/master/README.md
         
-    Execution Steps
+   # Execution Steps
     
-    * Configure Service Principal Name
+     * Configure Service Principal Name
     
-    * Configure TerraForm
+     * Configure TerraForm
     
-    * Setup Parameters
+     * Setup Parameters
     
-    * Execute Build
-
-
-		   
+     * Build
+	   
 # Create an Azure service principal with Azure CLI
 	
 Automated tools that use Azure services should always have restricted permissions. Instead of having applications sign in as a fully privileged user, Azure offers service principals.
